@@ -6,23 +6,13 @@ import os
 
 # Set page configuration with a wide layout and custom title/icon
 st.set_page_config(page_title="Anime Recommender System", page_icon="🌸", layout="wide")
-# Function to convert image to base64
-
-def get_base64_image(file_path):
-    with open(file_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode()
-
-# Path to the image in the Images folder
-image_path = os.path.join("Images", "anime-moon-landscape_2.jpg")  # Replace "background.jpg" with your image filename
-bg_image = get_base64_image(image_path)
-
 
 #App colour and design
 st.markdown(f"""
     <style>
-    /* Background image styling with base64 */
+    /* Background colour*/
     .stApp {{
-        background-color: #333333; /* Black Purple */
+        background-color: #333333; 
         font-family: 'Comic Sans MS', cursive, sans-serif;
         margin: 0;
         padding: 0;
@@ -30,18 +20,18 @@ st.markdown(f"""
     }}
     /* Header styling */
     h1 {{
-        color: #fff; /* Already white, kept for clarity */
+        color: #fff; 
         text-align: center;
         text-shadow: 2px 2px 4px #ff1493;
         font-size: 48px;
         margin-top: 60px;
     }}
     h2 {{
-        color: #fff; /* Changed from #ffd700 (gold) to white */
+        color: #fff; 
         text-shadow: 1px 1px 3px #ff4500;
     }}
     h3 {{
-        color: #fff; /* Changed from #ffd700 (gold) to white */
+        color: #fff; 
     }}
     .st-emotion-cache-ue6h4q {{
         color: #fff
@@ -50,20 +40,20 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab-list"] {{
         background-color: #C71585;
         padding: 10px;
-        position: fixed; /* Changed to fixed for true top positioning */
+        position: fixed; 
         top: 0;
         left: 0; /* Align to left edge */
         width: 100%; /* Full width of the page */
         display: flex;
         justify-content: space-around;
-        z-index: 1000; /* Increased to ensure tabs stay above content */
+        z-index: 1000; /*  ensure tabs stay above content */
         margin: 0;
         box-sizing: border-box;
         transition: top 0.3s ease;  
     }}
     /* Individual tabs - Orchid color */
     .stTabs [data-baseweb="tab"] {{
-        color: #fff; /* Already white, kept for clarity */
+        color: #fff; 
         font-weight: bold;
         padding: 10px 20px;
         background-color: #C71585; /* Orchid */
@@ -77,7 +67,7 @@ st.markdown(f"""
     }}
     .stTabs [data-baseweb="tab-highlight"] {{
         background-color: #ffd700 !important; /* Gold */
-        color: #fff; /* Changed from #ff4500 (orange-red) to white */
+        color: #fff; /*  white */
     }}
     /* Content area - Ensure it stays below tabs */
     .content {{
