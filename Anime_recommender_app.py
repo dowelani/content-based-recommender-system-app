@@ -41,7 +41,7 @@ st.markdown(f"""
         background-color: #C71585;
         padding: 10px;
         position: fixed; 
-        top: 0;
+        top: 1;
         left: 0; /* Align to left edge */
         width: 100%; /* Full width of the page */
         display: flex;
