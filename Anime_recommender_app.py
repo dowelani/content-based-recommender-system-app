@@ -1,11 +1,31 @@
 import streamlit as st
 import pandas as pd
 import pickle
-import base64
 import os
+import base64
 
 # Set page configuration with a wide layout and custom title/icon
-st.set_page_config(page_title="Anime Recommender System", page_icon="🌸", layout="wide")
+naruto_icon_path = os.path.join("Images", "pikachu_icon.png")
+st.set_page_config(page_title="Anime Recommender System", page_icon=naruto_icon_path, layout="wide")
+
+# Function to convert image to base64
+def get_base64_image(file_path):
+    with open(file_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode()
+
+# Load the icons
+left_icon_path = os.path.join("Images", "left_icon.png")  
+right_icon_path = os.path.join("Images", "right_icon.png")
+home_icon_path = os.path.join("Images", "home_icon.png")
+model_icon_path = os.path.join("Images", "model_icon.png")
+data_icon_path = os.path.join("Images", "data_icon.png")
+team_icon_path = os.path.join("Images", "team_icon.png") 
+left_icon_base64 = get_base64_image(left_icon_path)
+right_icon_base64 = get_base64_image(right_icon_path)
+home_icon_base64 = get_base64_image(home_icon_path)
+model_icon_base64 = get_base64_image(model_icon_path)
+data_icon_base64 = get_base64_image(data_icon_path)
+team_icon_base64 = get_base64_image(team_icon_path)
 
 #App colour and design
 st.markdown(f"""
@@ -24,7 +44,7 @@ st.markdown(f"""
         text-align: center;
         text-shadow: 2px 2px 4px #ff1493;
         font-size: 48px;
-        margin-top: 60px;
+        margin-top: 0px;
     }}
     h2 {{
         color: #fff; 
@@ -34,20 +54,37 @@ st.markdown(f"""
         color: #fff; 
     }}
     .st-emotion-cache-ue6h4q {{
-        color: #fff
+        color: #fff;
+    }}
+    .st-bq {{
+     color: #fff;;
+    }}
+    .st-hv {{
+    color: rgb(49, 51, 63);
+    }}
+    .st-e5 {{
+    background-color: #fff;
+    }}
+    .st-c1{{
+    color: #ba9f0f
+    }}
+    element.style {{
+    text-align: center;
+    color: #fff;
+    padding: 50px;
     }}
     /* Tab styling */
     .stTabs [data-baseweb="tab-list"] {{
         background-color: #C71585;
         padding: 10px;
         position: fixed; 
-        top: 1;
+        top: 0;
         left: 0; /* Align to left edge */
         width: 100%; /* Full width of the page */
         display: flex;
         justify-content: space-around;
         z-index: 1000; /*  ensure tabs stay above content */
-        margin: 0;
+        margin: 10;
         box-sizing: border-box;
         transition: top 0.3s ease;  
     }}
@@ -55,10 +92,13 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab"] {{
         color: #fff; 
         font-weight: bold;
-        padding: 10px 20px;
+        padding: 70px 20px 5px 40px;
         background-color: #C71585; /* Orchid */
         transition: all 0.3s ease;
         flex-grow: 1;
+        display: flex; /* Use flexbox for vertical alignment */
+        flex-direction: column; /* Stack content vertically */
+        justify-content: flex-end; /* Align text to bottom */
         text-align: center;
     }}
     .stTabs [data-baseweb="tab"]:hover {{
@@ -72,8 +112,8 @@ st.markdown(f"""
     /* Content area - Ensure it stays below tabs */
     .content {{
         background-color: rgba(255, 255, 255, 0.95);
-        padding: 2px;
-        border-radius: 15px;
+        padding: 3px;
+        border-radius: 0px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         margin: 0;
         color: #fff;
@@ -98,6 +138,25 @@ st.markdown(f"""
     .stButton > button:hover {{
         background-color: #FFA500; /* Orange on hover */
     }}
+    /* Style for the specific button */
+    .custom-explore-button button {{
+        background-color: #FF4500; /* Orange Red */
+        color: #fff; /* White text */
+        padding: 35px 35px; /* Size: 10px vertical, 20px horizontal */
+        font-size: 32px; /* Text size */
+        border: 2px solid #FFD700; /* Remove default border */
+        border-radius: 45px; /* Rounded shape */
+        width: 400px; /* Fixed width */
+        text-align: center; /* Center text inside button */
+        display: block; /* Block-level for width control */
+        margin: 40px auto; /* Align left (adjust as needed) */
+        cursor: pointer; /* Hand cursor on hover */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
+    }}
+    .custom-explore-button button:hover {{
+        background-color: #FF6347; /* Lighter orange on hover */
+        transform: scale(1.05); /* Slight scale-up on hover */
+    }}
     /* Add padding to the main container to push content below tabs */
     [data-testid="stAppViewContainer"] {{
         padding-top: 60px !important; /* Space for tab bar height */
@@ -110,74 +169,158 @@ st.markdown(f"""
         color: #fff;
     }}
     </style>
-
+    <!-- JavaScript for tab switching and debugging -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {{
+        setTimeout(function() {{
+            var tabs = document.querySelectorAll('.stTabs [data-baseweb="tab-list"] button');
+            console.log('Found tabs:', tabs.length);
+            tabs.forEach(function(tab, index) {{
+                console.log('Tab ' + index + ':', tab.innerText);
+            }});
+        }}, 1000);
+    }});
+    </script>
     
     """, unsafe_allow_html=True)
 
 # Main function
 def main():
+    #Load data
+    #indices,cosine_sim,names = read_anime_data()
+    
     # Create tabs at the top
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Home", "Content Recommender","About the model", "About the data","About the team"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Home", "Content Recommender","About the models", "About the data","About the team"])
 
     # Home Tab
     with tab1:
-        st.markdown("<h1>🌟 Welcome to the Anime Universe! 🌟</h1>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <h1>
+                <img src="data:image/png;base64,{home_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-right: 10px;">
+                Welcome to the Anime Universe!
+                <img src="data:image/png;base64,{home_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-left: 10px;">
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
         st.markdown('<div class="content">', unsafe_allow_html=True)
         st.write("Insert project overview here!")
         st.write("Dive into the colorful world of anime! Explore epic adventures, heartwarming stories, and vibrant characters. This is your one-stop hub for all things anime!")
-        # Placeholder for an image (you can upload your own anime image)
-        st.image("https://via.placeholder.com/600x300.png?text=Anime+Banner", caption="Epic Anime Adventure Awaits!")
+        image_path = os.path.join("Images", "Home_page1.jpg")  
+        st.image(image_path, use_column_width=True)
+        
+        st.write("So look no further and try our recommender system, to find the animes most suitable for you!")
+        st.markdown("""
+            <div class="custom-explore-button">
+                <button onclick="document.querySelectorAll('.stTabs [data-baseweb=\"tab-list\"] button')[1].click()">Recommender System</button>
+            </div>
+        """, unsafe_allow_html=True)
+        st.markdown('<div class="custom-explore-button">', unsafe_allow_html=True)
+        #st.button("Recommender System")
+        #st.markdown('</div>', unsafe_allow_html=True)
+        
         st.markdown('</div>', unsafe_allow_html=True)
     
     # Content Recommender Tab
     with tab2:
-        st.markdown("<h1>🌟 Content Recommender 🌟</h1>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <h1>
+                <img src="data:image/png;base64,{left_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-right: 10px;">
+                Content Recommender
+                <img src="data:image/png;base64,{right_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-left: 10px;">
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
         st.markdown('<div class="content">', unsafe_allow_html=True)
         st.markdown("<h2>Top Anime Picks</h2>", unsafe_allow_html=True)
         
+        
+        names = pd.read_csv("Data/anime_titles.csv")
         algorithm = st.radio("Select an Algorithm:", ["Content Based Filtering", "Collaborative Based Filtering"])
+        
         if algorithm == "Content Based Filtering":
         
-            st.subheader("Enter Your Favourite Anime Title")
-            anime_title = st.text_input("Anime Title:")
+            st.subheader("Please Select your favourite anime Title")
+            anime_title = st.selectbox(" Anime Title:", names['name'])
                    
             if st.button("Recommend"):
                 if anime_title:
-                    result = content_predict(anime_title)
+                    result = content_recomm(anime_title)
                     st.write(result)
                 else:
-                    st.warning("Please fill select for all fields.")
+                    st.warning("Please select an anime.")
         else:
-            st.subheader("Enter Your User ID and Select Select your favourite anime Title")
-            user_id = st.text_input("User ID:")
-            anime_title = st.text_input("Anime Title:")
+            st.subheader("Please Select your favourite anime Title")
+            #user_id = st.text_input("User ID:")
+            anime_title = st.selectbox(" Anime Title:", names['name'])
 
             if st.button("Recommend"):
                 if user_id and anime_title:
-                    result = Collab_predict(user_id,anime_title)
+                    result = collab_recomm(anime_title)
                     st.write(result)
                 else:
-                    st.warning("Please fill select for all fields.")
+                    st.warning("Please select an anime.")
                                
         st.markdown('</div>', unsafe_allow_html=True)
         
     # About the Model Tab
     with tab3:
-        st.markdown("<h1>🌟 The Model! 🌟</h1>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <h1>
+                <img src="data:image/png;base64,{model_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-right: 10px;">
+                The Models!
+                <img src="data:image/png;base64,{model_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-left: 10px;">
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
+
         st.markdown('<div class="content">', unsafe_allow_html=True)
-        st.write("Insert info about the chosen model!")
+        st.write("The recommender system employs two distinct types of models, content based filtering and collaborative filtering. Each of these models use sophisticated machine learning algorithms and function  in a unique way to provide you a list of animes similar to your favourite anime title, for your  watch list.")
+        
+        st.markdown("<h2>Content Based Filtering</h2>", unsafe_allow_html=True)
+        st.write("This recommender model is algorithm based. This means it does not use a predefined machine learning model, instead it is built from the ground up. The algorithm heavily relies on the mathametical concept of cosine similarity, which measures the cosine of the angle between two vectors in a multi-dimensional space. This metric is particularly useful for measuring how similar two items are in terms of their features, regardless of their magnitude. The model uses this concept to recommend anime titles based on their features and how similar they are to the title that is provided. To achieve this, each anime title is represented as a vector of features. these include the genre, type, number of members etc. Then the cosine similarity ois calculated between the title the user provides and over 12 000 animes in the our database. The anime titles with the highest cosine similarity are ranked higher and recommended to the user to watch next. However, this model has a slight drawback where it may recomend anime titles that are too similary to the one the user provided. Therefore lacking diversity. If you want recommendations that a nearly similar to your favourite anime, this is the model to choose!")
+        #Image demonstrating cosine similarity to be inserted here
+        st.markdown("<h2>Collaborative Filtering</h2>", unsafe_allow_html=True)
+        st.write("This model, unlike content basd filtering, relies heavily on user prefernces and behaviour to identify anime titles suitable for recommendation. The model uses user-item interactions, which are the user anime ratings. It assumes that the user would like animes that a similar to those that other users who also watch the provided anime title like. Therefore, recommending the anime titles for the user to watch. The model creates a user-ratings matrix with the rows as users and columns as the anime titles, and their ratings for each user. Subsequently, the similarity score is calculated for each item and user. The model will find the users that have rated the provided anime title highly and recommend other animes that they have rated highly for the user to watch next. This ensures the modeel can identify complex patterns in user behaviour that werent obvious based on anime features alone. Consequently, it provides diversity recommendations. So, if you would like to get recommendations based on users like your self, this is you go to model! ")
+        #Image show showcasing something similar to collaborative filtering
         st.markdown('</div>', unsafe_allow_html=True)
     # About the Data Tab
     with tab4:
-        st.markdown("<h1>🌟 The Data! 🌟</h1>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <h1>
+                <img src="data:image/png;base64,{data_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-right: 10px;">
+                The Data!
+                <img src="data:image/png;base64,{data_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-left: 10px;">
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
+        
         st.markdown('<div class="content">', unsafe_allow_html=True)
-        st.markdown("<h2>About This Site</h2>", unsafe_allow_html=True)
-        st.write("Insert EDA information to describe training data and soforth")
+        
+        st.write("Two datasets were used to train our recommender models. One dataset contained all information regarding the animes, including the name, genres, types, number of episodes and average ratings. The second datset contained a list of users and their ratings for various anime titles. An analysis of these datasets highlighted some key information that i'd like to share with you!")
+        
         st.markdown('</div>', unsafe_allow_html=True)
 
     # About the Team Tab
     with tab5:
-        st.markdown("<h1>🌟 Meet the team! 🌟</h1>", unsafe_allow_html=True)
+        st.markdown(
+            f"""
+            <h1>
+                <img src="data:image/png;base64,{team_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-right: 10px;">
+                Meet the team!
+                <img src="data:image/png;base64,{team_icon_base64}" style="width: 45px; height: 45px; vertical-align: middle; margin-left: 10px;">
+            </h1>
+            """,
+            unsafe_allow_html=True
+        )
+        
         st.markdown('<div class="content">', unsafe_allow_html=True)
         st.write("This app was brought to you by a team of dedicated Data Science students. ")
         st.markdown("<h2>About This Site</h2>", unsafe_allow_html=True)
@@ -197,19 +340,56 @@ def main():
     """, unsafe_allow_html=True)
         
 
-#Content Based Recommender Function
-def predict(anime_title):
-    with open('model/content_model.plk', 'rb') as f:
-        model = pickle.load(f)
+#Reading anime data into script Function
+def read_anime_data():
+    #Load anime title indices
+    indices = pd.read_csv("Data/anime_indices.csv")
+    #Load anime df cosine similarity matrix
+    with open('cosine_matrix.pkl', 'wb') as f:
+        sim_matrix = pickle.load(f)
+    #Load anime titles as names
+    names = pd.read_csv("Data/anime_titles.csv")
+    return indices, sim_matrix, names
 
-    return anime_recom
+#Content Based Recommender Function
+def content_recomm(anime_title, top_n=10):
+
+    #Load data
+    indices,cosine_sim,names = read_anime_data()
+    
+    # Get the index of the anime title
+    idx = indices[anime_title]
+
+    # Get the similarity scores for the anime title
+    sim_scores = list(enumerate(cosine_sim[idx]))
+
+    # Sort the similarity scores in descending order
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Get the top N similar anime titles
+    sim_scores = sim_scores[1:top_n + 1]  # Exclude the anime itself
+
+    # Get the anime indices
+    anime_indices = [i[0] for i in sim_scores]
+
+    # Return the recommended anime titles
+    return names.iloc[anime_indices].tolist()
 
 
 #Collaborative Recommender Function
-def predict(user_id,anime_title):
+def collab_recomm(anime_title):
     with open('model/collaborative_model.plk', 'rb') as f:
         model = pickle.load(f)
-
+    #Add code here that gets anime id for matching title    
+    anime_users = trainset[trainset['anime_id'] == anime_id]['user_id']
+    recs = {}
+    for _id in anime_df['anime_id']:
+      if _id != anime_id:
+          pred = np.mean([model.predict(u, _id).est for u in anime_users])
+          recs[_id] = pred
+    
+    top_n_ids = sorted(recs, key=recs.get, reverse=True)[:top_n]
+    recs = anime_df[anime_df['anime_id'].isin(top_n_ids)]['name'].tolist()
     return anime_recom
     
 # Calling main function
