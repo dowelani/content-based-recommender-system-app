@@ -92,7 +92,7 @@ st.markdown(f"""
     .stTabs [data-baseweb="tab"] {{
         color: #fff; 
         font-weight: bold;
-        padding: 70px 20px 5px 40px;
+        padding: 90px 20px 5px 40px;
         background-color: #C71585; /* Orchid */
         transition: all 0.3s ease;
         flex-grow: 1;
