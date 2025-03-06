@@ -220,7 +220,7 @@ def main():
         st.markdown('<div class="content">', unsafe_allow_html=True)
         
         image_path = os.path.join("Images", "Home_page1.jpg")  
-        st.image(image_path, use_column_width=True)
+        st.image(image_path, uuse_container_width=True)
         
         st.write("Dive into the colorful world of anime! Explore epic adventures, heartwarming stories, and vibrant characters. This is your one-stop hub for all things anime!")
         st.write("So look no further and try our recommender system, to find the animes most suitable for you!")
