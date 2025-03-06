@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import os
 import base64
+import surprise
 
 # Set page configuration with a wide layout and custom title/icon
 naruto_icon_path = os.path.join("Images", "pikachu_icon.png")
@@ -157,6 +158,20 @@ st.markdown(f"""
         background-color: #FF6347; /* Lighter orange on hover */
         transform: scale(1.05); /* Slight scale-up on hover */
     }}
+    /* Style for the table */
+    .streamlit-table table {{
+        color: rgb(255 255 255); /* White text */
+        border-collapse: collapse; /* Ensures borders are clean */
+    }}
+    /* Style for table cells and borders */
+    .streamlit-table td, .streamlit-table th {{
+        border: 1px solid rgb(255 255 255); /* White borders */
+        padding: 8px; /* Optional: Adjust padding */
+    }}
+    /* Optional: Background color for contrast */
+    .streamlit-table {{
+        background-color: #333333; /* Dark background for visibility */
+    }}
     /* Add padding to the main container to push content below tabs */
     [data-testid="stAppViewContainer"] {{
         padding-top: 60px !important; /* Space for tab bar height */
@@ -186,8 +201,6 @@ st.markdown(f"""
 
 # Main function
 def main():
-    #Load data
-    #indices,cosine_sim,names = read_anime_data()
     
     # Create tabs at the top
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["Home", "Content Recommender","About the models", "About the data","About the team"])
@@ -205,11 +218,11 @@ def main():
             unsafe_allow_html=True
         )
         st.markdown('<div class="content">', unsafe_allow_html=True)
-        st.write("Insert project overview here!")
-        st.write("Dive into the colorful world of anime! Explore epic adventures, heartwarming stories, and vibrant characters. This is your one-stop hub for all things anime!")
+        
         image_path = os.path.join("Images", "Home_page1.jpg")  
         st.image(image_path, use_column_width=True)
         
+        st.write("Dive into the colorful world of anime! Explore epic adventures, heartwarming stories, and vibrant characters. This is your one-stop hub for all things anime!")
         st.write("So look no further and try our recommender system, to find the animes most suitable for you!")
         st.markdown("""
             <div class="custom-explore-button">
@@ -217,8 +230,6 @@ def main():
             </div>
         """, unsafe_allow_html=True)
         st.markdown('<div class="custom-explore-button">', unsafe_allow_html=True)
-        #st.button("Recommender System")
-        #st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
     
@@ -235,10 +246,10 @@ def main():
             unsafe_allow_html=True
         )
         st.markdown('<div class="content">', unsafe_allow_html=True)
-        st.markdown("<h2>Top Anime Picks</h2>", unsafe_allow_html=True)
+        st.write(" Have you ever finished an amazing anime and wished you had a list of equally exciting shows to watch next? That feeling of wanting more but not knowing where to start? 🎞️✨ That’s where our recommender system come in! It is like your personal anime guide, suggesting new shows and movies based on what you already love—so you’ll always have something awesome to watch next! Give it a try!")
         
         
-        names = pd.read_csv("Data/anime_titles.csv")
+        names = read_anime_data()
         algorithm = st.radio("Select an Algorithm:", ["Content Based Filtering", "Collaborative Based Filtering"])
         
         if algorithm == "Content Based Filtering":
@@ -248,19 +259,21 @@ def main():
                    
             if st.button("Recommend"):
                 if anime_title:
-                    result = content_recomm(anime_title)
-                    st.write(result)
+                    results = content_recomm(anime_title)
+                    table_data = [[result] for result in results]
+                    st.table({"Recommendations": [row[0] for row in table_data]})
                 else:
                     st.warning("Please select an anime.")
         else:
             st.subheader("Please Select your favourite anime Title")
-            #user_id = st.text_input("User ID:")
             anime_title = st.selectbox(" Anime Title:", names['name'])
 
             if st.button("Recommend"):
-                if user_id and anime_title:
-                    result = collab_recomm(anime_title)
-                    st.write(result)
+                if anime_title:
+                    title = names[names['name'] == anime_title]['anime_id'].iloc[0] 
+                    results = collab_recomm(anime_title)
+                    table_data = [[result] for result in results]
+                    st.table({"Recommendations": [row[0] for row in table_data]})
                 else:
                     st.warning("Please select an anime.")
                                
@@ -306,6 +319,20 @@ def main():
         
         st.write("Two datasets were used to train our recommender models. One dataset contained all information regarding the animes, including the name, genres, types, number of episodes and average ratings. The second datset contained a list of users and their ratings for various anime titles. An analysis of these datasets highlighted some key information that i'd like to share with you!")
         
+        st.markdown("<h2>Anime genres</h2>", unsafe_allow_html=True)
+        st.write(" The bar chart reveals the most popular anime genres to be Comedy, Action, Adventure, Fantasy, and Sci-Fi. Yuri and Yaoi have the lowest popularity. majority of genres apprear less than 1000 times in the dataset.")
+        image_path = os.path.join("Images", "genres.png")  
+        st.image(image_path, use_column_width=True)
+        #st.markdown("<h2>Anime types</h2>", unsafe_allow_html=True)
+        #st.write(" Explain the most popular types..")
+        st.markdown("<h2>Anime popularity</h2>", unsafe_allow_html=True)
+        st.write(" The bar chart reveals that most popular top 10 anime based on number of members range between 633.817k and 1.013917M with most of them falling bellow 717.796k number of members, it also shows that Death Note is the most popular anime based on number of members")
+        image_path = os.path.join("Images", "members_pop.png")  
+        st.image(image_path, use_column_width=True)
+        st.write(" EThe bar chart reveals that most popular top 10 anime based on average rating have high average ratings, which are between 9.16 and 10; Taka no Tsume 8: Yoshida-kun no X-Files has the highest avarage rating with a 10 average rating")
+        image_path = os.path.join("Images", "avg_ratings_pop.png")  
+        st.image(image_path, use_column_width=True)
+        
         st.markdown('</div>', unsafe_allow_html=True)
 
     # About the Team Tab
@@ -323,6 +350,14 @@ def main():
         
         st.markdown('<div class="content">', unsafe_allow_html=True)
         st.write("This app was brought to you by a team of dedicated Data Science students. ")
+        st.markdown(f"""
+                    * Nthabiseng Mokhachane
+                    * Hope Mohola
+                    * Khumbelo Dowelani
+                    * Musa Khuzwayo
+                    """,
+            unsafe_allow_html=True
+        )
         st.markdown("<h2>About This Site</h2>", unsafe_allow_html=True)
         st.write("""
             This site is built with love for anime fans! Created using Streamlit, 
@@ -342,22 +377,20 @@ def main():
 
 #Reading anime data into script Function
 def read_anime_data():
-    #Load anime title indices
-    indices = pd.read_csv("Data/anime_indices.csv")
-    #Load anime df cosine similarity matrix
-    with open('cosine_matrix.pkl', 'wb') as f:
-        sim_matrix = pickle.load(f)
-    #Load anime titles as names
-    names = pd.read_csv("Data/anime_titles.csv")
-    return indices, sim_matrix, names
+    names_N_id = pd.read_csv("Data/anime_names.csv")
+    return names_N_id
 
 #Content Based Recommender Function
 def content_recomm(anime_title, top_n=10):
+    title = anime_title
+    with open('Model/cosine_similarity.pkl', 'rb') as f:
+        cosine_sim = pickle.load(f)
+    with open('Model/indices.pkl', 'rb') as f:
+        indices = pickle.load(f)
+    with open('Model/anime_titles.pkl', 'rb') as f:
+        anime_titles = pickle.load(f)
 
-    #Load data
-    indices,cosine_sim,names = read_anime_data()
-    
-    # Get the index of the anime title
+        # Get the index of the anime title
     idx = indices[anime_title]
 
     # Get the similarity scores for the anime title
@@ -373,24 +406,28 @@ def content_recomm(anime_title, top_n=10):
     anime_indices = [i[0] for i in sim_scores]
 
     # Return the recommended anime titles
-    return names.iloc[anime_indices].tolist()
+    results = anime_titles.iloc[anime_indices].tolist()
+    
+    return results
 
 
 #Collaborative Recommender Function
 def collab_recomm(anime_title):
-    with open('model/collaborative_model.plk', 'rb') as f:
-        model = pickle.load(f)
-    #Add code here that gets anime id for matching title    
+    with open('Model/svd_model.pkl', 'rb') as f:
+        svd = pickle.load(f)
+    with open('Model/train.pkl', 'rb') as f:
+        trainset = pickle.load(f)
+    anime_id = anime_title
     anime_users = trainset[trainset['anime_id'] == anime_id]['user_id']
-    recs = {}
-    for _id in anime_df['anime_id']:
+    results = []
+    for _id in names['anime_id']:
       if _id != anime_id:
-          pred = np.mean([model.predict(u, _id).est for u in anime_users])
-          recs[_id] = pred
+          pred = np.mean([svd.predict(u, _id).est for u in anime_users])
+          results[_id] = pred
     
-    top_n_ids = sorted(recs, key=recs.get, reverse=True)[:top_n]
-    recs = anime_df[anime_df['anime_id'].isin(top_n_ids)]['name'].tolist()
-    return anime_recom
+    top_n_ids = sorted(results, key=results.get, reverse=True)[:top_n]
+    results = anime_df[anime_df['anime_id'].isin(top_n_ids)]['name'].tolist()
+    return results
     
 # Calling main function
 if __name__ == "__main__":
