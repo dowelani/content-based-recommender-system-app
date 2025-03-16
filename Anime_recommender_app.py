@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 import os
 import base64
-#import surprise
+import surprise
 
 # Set page configuration with a wide layout and custom title/icon
 naruto_icon_path = os.path.join("Images", "pikachu_icon.png")
@@ -412,11 +412,12 @@ def content_recomm(anime_title, top_n=10):
 
 
 #Collaborative Recommender Function
-def collab_recomm(anime_title):
+def collab_recomm(anime_title,top_n=10):
     with open('Model/svd_model.pkl', 'rb') as f:
         svd = pickle.load(f)
     with open('Model/train.pkl', 'rb') as f:
         trainset = pickle.load(f)
+        
     anime_id = anime_title
     anime_users = trainset[trainset['anime_id'] == anime_id]['user_id']
     results = []
@@ -426,7 +427,7 @@ def collab_recomm(anime_title):
           results[_id] = pred
     
     top_n_ids = sorted(results, key=results.get, reverse=True)[:top_n]
-    results = anime_df[anime_df['anime_id'].isin(top_n_ids)]['name'].tolist()
+    results = names[names['anime_id'].isin(top_n_ids)]['name'].tolist()
     return results
     
 # Calling main function
