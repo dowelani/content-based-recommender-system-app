@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 import os
 import base64
-import sklearn.surprise
+import surprise
 
 # Set page configuration with a wide layout and custom title/icon
 naruto_icon_path = os.path.join("Images", "pikachu_icon.png")
