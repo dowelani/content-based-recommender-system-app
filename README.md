@@ -35,8 +35,6 @@ The application relies on the following Python libraries:
 - `pandas` - Data manipulation
 - `numpy` - Numerical operations
 - `scikit-learn` - Machine learning algorithms (e.g., cosine similarity)
-- `requests` - For fetching external data (if applicable)
-- `beautifulsoup4` - For web scraping or HTML parsing (if applicable)
 - `pickle` - For loading pre-trained models
 
 Install them using the provided `requirements.txt`:
