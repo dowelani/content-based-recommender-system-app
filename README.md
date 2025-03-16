@@ -17,7 +17,7 @@ This repository contains a Streamlit web application that provides personalized 
 
 ## Recommender Systems
 - **Collaborative Filtering**: Recommends anime based on user ratings and similarities between users.
-- **Content-Based Filtering**: Suggests anime based on features like genres, themes, and descriptions.
+- **Content-Based Filtering**: Suggests anime based on features like genres, type, and number of episodes.
 
 ## Application Structure
 The application's interactive UI is built with Streamlit for easy input and visualization of recommendations. It contains several pages that immerse the user in the world of anime and recommender system. The pages contain the following:
