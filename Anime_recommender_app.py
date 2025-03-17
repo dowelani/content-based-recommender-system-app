@@ -417,7 +417,7 @@ def content_recomm(anime_title, top_n=10):
 def collab_recomm(anime_title,top_n=10):
     with gzip.open('Model/svd_model.pkl.gz', 'rb') as f:
         svd = pickle.load(f)
-    with gzip.open('Model/train.pkl.gz', 'rb.') as f:
+    with gzip.open('Model/train.pkl.gz', 'rb') as f:
         trainset = pickle.load(f)
         
     anime_id = anime_title
