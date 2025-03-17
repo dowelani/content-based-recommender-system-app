@@ -414,7 +414,7 @@ def content_recomm(anime_title, top_n=10):
 
 
 #Collaborative Recommender Function
-def collab_recomm(anime_title,top_n=10):
+def collab_recomm(anime_title,top_n=10,names=names):
     with gzip.open('Model/svd_model.pkl.gz', 'rb') as f:
         svd = pickle.load(f)
     with gzip.open('Model/train.pkl.gz', 'rb') as f:
