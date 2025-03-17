@@ -323,16 +323,17 @@ def main():
         st.markdown("<h2>Anime genres</h2>", unsafe_allow_html=True)
         st.write(" The bar chart reveals the most popular anime genres to be Comedy, Action, Adventure, Fantasy, and Sci-Fi. Yuri and Yaoi have the lowest popularity. majority of genres apprear less than 1000 times in the dataset.")
         image_path = os.path.join("Images", "genres.png")  
-        st.image(image_path, use_column_width=True)
-        #st.markdown("<h2>Anime types</h2>", unsafe_allow_html=True)
-        #st.write(" Explain the most popular types..")
-        st.markdown("<h2>Anime popularity</h2>", unsafe_allow_html=True)
+        st.image(image_path)
+        
+        st.markdown("<h2>Anime members popularity</h2>", unsafe_allow_html=True)
         st.write(" The bar chart reveals that most popular top 10 anime based on number of members range between 633.817k and 1.013917M with most of them falling bellow 717.796k number of members, it also shows that Death Note is the most popular anime based on number of members")
         image_path = os.path.join("Images", "members_pop.png")  
-        st.image(image_path, use_column_width=True)
-        st.write(" EThe bar chart reveals that most popular top 10 anime based on average rating have high average ratings, which are between 9.16 and 10; Taka no Tsume 8: Yoshida-kun no X-Files has the highest avarage rating with a 10 average rating")
+        st.image(image_path)
+        
+        st.markdown("<h2>Anime ratings popularity</h2>", unsafe_allow_html=True)
+        st.write(" The bar chart below reveals that most popular top 10 anime based on average rating have high average ratings, which are between 9.16 and 10; Taka no Tsume 8: Yoshida-kun no X-Files has the highest avarage rating with a 10 average rating. This indicates that the highly rated animes, compared to the previous graph, are not necessarilly the most viewed. Death note is nowhere amongst the top 10 most rated. Similarly, the most rated animes where not in the most viewed plot")
         image_path = os.path.join("Images", "avg_ratings_pop.png")  
-        st.image(image_path, use_column_width=True)
+        st.image(image_path)
         
         st.markdown('</div>', unsafe_allow_html=True)
 
