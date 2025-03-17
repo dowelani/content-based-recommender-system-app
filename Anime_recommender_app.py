@@ -414,12 +414,14 @@ def content_recomm(anime_title, top_n=10):
 
 
 #Collaborative Recommender Function
-def collab_recomm(anime_title,top_n=10,names=names):
+def collab_recomm(anime_title,top_n=10):
     with gzip.open('Model/svd_model.pkl.gz', 'rb') as f:
         svd = pickle.load(f)
     with gzip.open('Model/train.pkl.gz', 'rb') as f:
         trainset = pickle.load(f)
         
+    names = read_anime_data()
+    
     anime_id = anime_title
     anime_users = trainset[trainset['anime_id'] == anime_id]['user_id']
     results = []
