@@ -425,7 +425,7 @@ def collab_recomm(anime_title,top_n=10):
     
     anime_id = anime_title
     anime_users = trainset[trainset['anime_id'] == anime_id]['user_id']
-    results = []
+    results = {}
     for _id in names['anime_id']:
       if _id != anime_id:
           pred = np.mean([svd.predict(u, _id).est for u in anime_users])
