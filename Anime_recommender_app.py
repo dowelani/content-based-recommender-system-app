@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import os
 import base64
+import gzip
 #import surprise
 
 # Set page configuration with a wide layout and custom title/icon
@@ -383,7 +384,7 @@ def read_anime_data():
 #Content Based Recommender Function
 def content_recomm(anime_title, top_n=10):
     title = anime_title
-    with open('Model/cosine_similarity.pkl', 'rb') as f:
+    with gzip.open('Model/cosine_similarity.pkl.gz', 'rb') as f:
         cosine_sim = pickle.load(f)
     with open('Model/indices.pkl', 'rb') as f:
         indices = pickle.load(f)
@@ -413,9 +414,9 @@ def content_recomm(anime_title, top_n=10):
 
 #Collaborative Recommender Function
 def collab_recomm(anime_title,top_n=10):
-    with open('Model/svd_model.pkl', 'rb') as f:
+    with gzip.open('Model/svd_model.pkl.gz', 'rb') as f:
         svd = pickle.load(f)
-    with open('Model/train.pkl', 'rb') as f:
+    with gzip.open('Model/train.pkl.gz', 'rb.') as f:
         trainset = pickle.load(f)
         
     anime_id = anime_title
