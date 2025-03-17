@@ -160,20 +160,7 @@ st.markdown(f"""
         background-color: #FF6347; /* Lighter orange on hover */
         transform: scale(1.05); /* Slight scale-up on hover */
     }}
-    /* Style for the table */
-    .streamlit-table table {{
-        color: rgb(255 255 255); /* White text */
-        border-collapse: collapse; /* Ensures borders are clean */
-    }}
-    /* Style for table cells and borders */
-    .streamlit-table td, .streamlit-table th {{
-        border: 1px solid rgb(255 255 255); /* White borders */
-        padding: 8px; /* Optional: Adjust padding */
-    }}
-    /* Optional: Background color for contrast */
-    .streamlit-table {{
-        background-color: #333333; /* Dark background for visibility */
-    }}
+    
     /* Add padding to the main container to push content below tabs */
     [data-testid="stAppViewContainer"] {{
         padding-top: 60px !important; /* Space for tab bar height */
@@ -262,8 +249,9 @@ def main():
             if st.button("Recommend"):
                 if anime_title:
                     results = content_recomm(anime_title)
-                    table_data = [[result] for result in results]
-                    st.table({"Recommendations": [row[0] for row in table_data]})
+                    st.write("Recommendations:")
+                    for i, result in enumerate(results, 1):
+                        st.write(f"{i}. {result}")
                 else:
                     st.warning("Please select an anime.")
         else:
@@ -274,8 +262,9 @@ def main():
                 if anime_title:
                     title = names[names['name'] == anime_title]['anime_id'].iloc[0] 
                     results = collab_recomm(anime_title)
-                    table_data = [[result] for result in results]
-                    st.table({"Recommendations": [row[0] for row in table_data]})
+                    st.write("Recommendations:")
+                    for i, result in enumerate(results, 1):
+                        st.write(f"{i}. {result}")
                 else:
                     st.warning("Please select an anime.")
                                
