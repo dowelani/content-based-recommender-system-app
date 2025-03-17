@@ -397,7 +397,7 @@ def read_anime_data():
 #Content Based Recommender Function
 def content_recomm(anime_title, top_n=10):
     title = anime_title
-    with gzip.open('Model/cosine_similarity.pkl.gz', 'rb') as f:
+    with gzip.open('Model/cosine.pkl.gz', 'rb') as f:
         cosine_sim = pickle.load(f)
     with open('Model/indices.pkl', 'rb') as f:
         indices = pickle.load(f)
