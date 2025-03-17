@@ -22,13 +22,15 @@ right_icon_path = os.path.join("Images", "right_icon.png")
 home_icon_path = os.path.join("Images", "home_icon.png")
 model_icon_path = os.path.join("Images", "model_icon.png")
 data_icon_path = os.path.join("Images", "data_icon.png")
-team_icon_path = os.path.join("Images", "team_icon.png") 
+team_icon_path = os.path.join("Images", "team_icon.png")
+pokemon_path = os.path.join("Images","pokemon.png")
 left_icon_base64 = get_base64_image(left_icon_path)
 right_icon_base64 = get_base64_image(right_icon_path)
 home_icon_base64 = get_base64_image(home_icon_path)
 model_icon_base64 = get_base64_image(model_icon_path)
 data_icon_base64 = get_base64_image(data_icon_path)
 team_icon_base64 = get_base64_image(team_icon_path)
+pokemone_icon_base64 = get_base64_image(pokemon_path)
 
 #App colour and design
 st.markdown(f"""
@@ -249,7 +251,17 @@ def main():
             if st.button("Recommend"):
                 if anime_title:
                     results = content_recomm(anime_title)
-                    st.write("Recommendations:")
+                    #st.write("Recommendations:")
+                    st.markdown(
+                        f"""
+                        <h3>
+                            <img src="data:image/png;base64,{pokemon_icon_base64}" style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
+                            Recommendations:
+                            <img src="data:image/png;base64,{pokemon_icon_base64}" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 10px;">
+                        </h3>
+                        """,
+                        unsafe_allow_html=True
+                    )
                     for i, result in enumerate(results, 1):
                         st.write(f"{i}. {result}")
                 else:
@@ -262,7 +274,17 @@ def main():
                 if anime_title:
                     title = names[names['name'] == anime_title]['anime_id'].iloc[0] 
                     results = collab_recomm(anime_title)
-                    st.write("Recommendations:")
+                    st.markdown(
+                        f"""
+                        <h3>
+                            <img src="data:image/png;base64,{pokemon_icon_base64}" style="width: 30px; height: 30px; vertical-align: middle; margin-right: 10px;">
+                            Recommendations:
+                            <img src="data:image/png;base64,{pokemon_icon_base64}" style="width: 30px; height: 30px; vertical-align: middle; margin-left: 10px;">
+                        </h3>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                    #st.write("Recommendations:")
                     for i, result in enumerate(results, 1):
                         st.write(f"{i}. {result}")
                 else:
