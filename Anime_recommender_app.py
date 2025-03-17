@@ -30,7 +30,7 @@ home_icon_base64 = get_base64_image(home_icon_path)
 model_icon_base64 = get_base64_image(model_icon_path)
 data_icon_base64 = get_base64_image(data_icon_path)
 team_icon_base64 = get_base64_image(team_icon_path)
-pokemone_icon_base64 = get_base64_image(pokemon_path)
+pokemon_icon_base64 = get_base64_image(pokemon_path)
 
 #App colour and design
 st.markdown(f"""
