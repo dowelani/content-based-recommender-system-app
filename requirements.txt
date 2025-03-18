@@ -1,6 +1,7 @@
 streamlit
 pandas>=2.2.2
 numpy<2.0
+numpy._core.numeric
 scikit-learn
 requests
 beautifulsoup4
